@@ -19,14 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etEmail , etPassword;
     FirebaseAuth auth;
-    FirebaseAuth.AuthStateListener authStateListener;
     ProgressDialog dialog;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authStateListener);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +36,9 @@ public class MainActivity extends AppCompatActivity {
         int logoutFlag = getIntent().getIntExtra("LOGOUT_FLAG",-1);
         if(logoutFlag != -1) {
             auth.signOut();
+            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
         }
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null) {
-                    Intent i = new Intent(MainActivity.this,EmployeeAccountActivity.class);
-                    startActivity(i);
-                }
-            }
-        };
 
         (findViewById(R.id.btnEmployeeLogin)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,EmployeeSignUpActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -74,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,AdminLoginActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -82,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
+
+        etEmail.setText("");
+        etPassword.setText("");
 
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
@@ -93,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent i = new Intent(MainActivity.this,EmployeeAccountActivity.class);
+                        startActivity(i);
                     }
                     dialog.dismiss();
                 }
@@ -104,4 +98,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Fields cannot be Empty", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

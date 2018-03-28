@@ -19,14 +19,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
     EditText etEmail , etPassword;
     FirebaseAuth auth;
-    FirebaseAuth.AuthStateListener authStateListener;
     ProgressDialog dialog;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authStateListener);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +31,11 @@ public class AdminLoginActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
 
         auth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null) {
-                    Intent i = new Intent(AdminLoginActivity.this,AdminAccountActivity.class);
-                    startActivity(i);
-                }
-            }
-        };
 
         int logoutFlag = getIntent().getIntExtra("LOGOUT_FLAG",-1);
         if(logoutFlag != -1) {
             auth.signOut();
+            Toast.makeText(AdminLoginActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
         }
 
         (findViewById(R.id.btnLogin)).setOnClickListener(new View.OnClickListener() {
@@ -76,6 +61,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()) {
                         Toast.makeText(AdminLoginActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                    }else
+                    {
+                        Intent i = new Intent(AdminLoginActivity.this,AdminAccountActivity.class);
+                        startActivity(i);
+                        finish();
                     }
                     dialog.dismiss();
                 }

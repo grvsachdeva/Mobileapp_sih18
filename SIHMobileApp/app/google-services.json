@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "816168026543-21n7sjkpc8784bbae2kepchjn6lh2db1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.namankhanna.sihmobileapp",
+            "certificate_hash": "73338aa30484d06322ee95463d00450214ff47ea"
+          }
+        },
+        {
           "client_id": "816168026543-uhng2pn1phajv8s7fkv68n41b4c9ulsv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -63,9 +64,14 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
                         Intent i = new Intent(EmployeeSignUpActivity.this,MainActivity.class);
-                        startActivity(i);
                         writeIntoDatabase();
+                        startActivity(i);
+                        finish();
                         dialog.dismiss();
+                    }else
+                    {
+                        Toast.makeText(EmployeeSignUpActivity.this, "Authentication failed." + task.getException(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -81,13 +87,14 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
 
     private void writeIntoDatabase() {
 
+        Log.v("TAG","writeIntoDatabase");
         DatabaseReference employeeRef = database.getReference().child("Employees");
         DatabaseReference employeeId = employeeRef.child(auth.getCurrentUser().getUid());
 
         Employee employee = new Employee(
                 etName.getText().toString(),
                 etDepartment.getText().toString(),
-                Integer.valueOf(etPhoneNo.getText().toString()),
+                etPhoneNo.getText().toString(),
                 true,
                 System.currentTimeMillis(),
                 0

@@ -6,7 +6,7 @@ package com.example.namankhanna.sihmobileapp
 data class Employee (
         val name:String,
         val department_name:String,
-        val phone_no:Int,
+        val phone_no:String,
         val isActive:Boolean,
         val registeration_time:Long,
         val totalAttendace:Int
