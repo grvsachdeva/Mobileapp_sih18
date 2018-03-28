@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,EmployeeSignUpActivity.class);
                 startActivity(i);
-                finish();
             }
         });
 
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,AdminLoginActivity.class);
                 startActivity(i);
-                finish();
             }
         });
     }
@@ -87,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     }else {
                         Intent i = new Intent(MainActivity.this,EmployeeAccountActivity.class);
                         startActivity(i);
+                        finish();
                     }
                     dialog.dismiss();
                 }
