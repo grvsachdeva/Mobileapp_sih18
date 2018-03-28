@@ -4,12 +4,24 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class EmployeeAccountActivity extends AppCompatActivity {
 
@@ -18,13 +30,30 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth auth;
 
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mEmployeeInfoReference;
+    private DatabaseReference mAttendanceReference;
+    private FirebaseUser mCurrentUser;
+    public ValueEventListener mValueEventListener;
+    public ChildEventListener mChildEventListener;
+    public ArrayList<Attendance> attendanceArrayList;
+    public static final String TAG = EmployeeAccountActivity.class.getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_account);
 
         auth = FirebaseAuth.getInstance();
+        mCurrentUser = auth.getCurrentUser();
 
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
+        mAttendanceReference = mEmployeeInfoReference.child("attendance");
+        attendanceArrayList = new ArrayList<>();
+        markAttendance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -36,10 +65,88 @@ public class EmployeeAccountActivity extends AppCompatActivity {
                     finish();
                 }else
                 {
+                    attachValueEventListener();
+                    attachChildEventListener();
                     Toast.makeText(EmployeeAccountActivity.this, "Welcome to your account", Toast.LENGTH_SHORT).show();
                 }
             }
         };
+
+    }
+
+    public void markAttendance()
+    {
+        Attendance attendance;
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = sdf.format(c);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String time_in = timeFormat.format(c);
+        String time_out = time_in;
+        LocationUtilities.getCurrentLocation(EmployeeAccountActivity.this);
+    }
+
+    public void attachChildEventListener()
+    {
+        if(mChildEventListener == null)
+        {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Attendance attendance = dataSnapshot.getValue(Attendance.class);
+                    if(attendance!=null)
+                    {
+                        attendanceArrayList.add(attendance);
+                        Log.v(TAG,attendance.toString());
+                    }else {
+                        Log.v(TAG,"No Value");
+                    }
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mAttendanceReference.addChildEventListener(mChildEventListener);
+        }
+    }
+
+    public void attachValueEventListener()
+    {
+        if(mValueEventListener==null)
+        {
+            mValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Employee employee = dataSnapshot.getValue(Employee.class);
+                    Log.v(TAG,employee.toString());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mEmployeeInfoReference.addValueEventListener(mValueEventListener);
+        }
     }
 
     @Override

@@ -63,7 +63,7 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
-                        Intent i = new Intent(EmployeeSignUpActivity.this,MainActivity.class);
+                        Intent i = new Intent(EmployeeSignUpActivity.this,EmployeeAccountActivity.class);
                         writeIntoDatabase();
                         startActivity(i);
                         finish();
