@@ -1,12 +1,18 @@
 package com.example.namankhanna.sihmobileapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +59,6 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
         mAttendanceReference = mEmployeeInfoReference.child("attendance");
         attendanceArrayList = new ArrayList<>();
-        markAttendance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -76,16 +81,16 @@ public class EmployeeAccountActivity extends AppCompatActivity {
 
     public void markAttendance()
     {
-        Attendance attendance;
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = sdf.format(c);
+//        Attendance attendance;
+//        Date c = Calendar.getInstance().getTime();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//        String formattedDate = sdf.format(c);
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+//        String time_in = timeFormat.format(c);
+//        String time_out = time_in;
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        String time_in = timeFormat.format(c);
-        String time_out = time_in;
-        LocationUtilities.getCurrentLocation(EmployeeAccountActivity.this);
-
+        Intent i = new Intent(EmployeeAccountActivity.this,EmployeeAttendanceActivity.class);
+        startActivity(i);
     }
 
     public void attachChildEventListener()
@@ -187,5 +192,9 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         if (authStateListener != null) {
             auth.removeAuthStateListener(authStateListener);
         }
+    }
+
+    public void startAttendance(View view) {
+        markAttendance();
     }
 }
