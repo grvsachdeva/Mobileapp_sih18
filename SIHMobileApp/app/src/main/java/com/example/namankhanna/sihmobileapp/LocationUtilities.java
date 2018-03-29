@@ -22,7 +22,6 @@ public class LocationUtilities {
     {
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "Permission not granted", Toast.LENGTH_LONG).show();
             return false;
         }
         else
@@ -44,16 +43,13 @@ public class LocationUtilities {
         mGoogleApiClient.connect();
 
         try{
-            @SuppressLint("MissingPermission") PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+            PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                     .getCurrentPlace(mGoogleApiClient, null);
             result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
                 @Override
                 public void onResult(PlaceLikelihoodBuffer placeLikelihoods) {
 
                     for (PlaceLikelihood placeLikelihood : placeLikelihoods) {
-//                        Log.v(String.format("Place '%s' has likelihood: %g",
-//                                placeLikelihood.getPlace().getName(),
-//                                placeLikelihood.getLikelihood()));
                         Log.v(LocationUtilities.class.getSimpleName(),placeLikelihood.getPlace().getName().toString());
                     }
 

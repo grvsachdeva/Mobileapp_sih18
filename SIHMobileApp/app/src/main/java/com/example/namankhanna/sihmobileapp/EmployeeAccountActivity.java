@@ -85,6 +85,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         String time_in = timeFormat.format(c);
         String time_out = time_in;
         LocationUtilities.getCurrentLocation(EmployeeAccountActivity.this);
+
     }
 
     public void attachChildEventListener()
