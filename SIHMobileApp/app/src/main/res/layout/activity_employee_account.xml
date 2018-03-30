@@ -22,132 +22,172 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:layout_margin="20dp">
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+            <android.support.v7.widget.CardView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
-                <ImageButton
-                    android:id="@+id/btnHistory"
-                    android:src="@drawable/history"
-                    android:scaleType="centerCrop"
-                    android:padding="25dp"
-                    android:layout_margin="10dp"
-                    android:onClick="showHistory"
-                    android:background="@android:color/transparent"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp">
 
-                <TextView
-                    android:text="History"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorGreen"
-                    android:layout_gravity="center|bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/btnHistory"
+                        android:src="@drawable/history"
+                        android:scaleType="centerCrop"
+                        android:padding="25dp"
+                        android:layout_margin="10dp"
+                        android:onClick="showHistory"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:text="History"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorGreen"
+                        android:layout_gravity="center|bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
+                </FrameLayout>
 
+            </android.support.v7.widget.CardView>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+            <android.support.v7.widget.CardView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
-                <ImageButton
-                    android:id="@+id/btnCheckIn"
-                    android:scaleType="centerCrop"
-                    android:padding="20dp"
-                    android:layout_margin="10dp"
-                    android:onClick="checkIn"
-                    android:background="@android:color/transparent"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp">
 
-                <TextView
-                    android:text="Check In"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorGreen"
-                    android:textStyle="bold"
-                    android:layout_gravity="center|bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/btnPersonalInfo"
+                        android:src="@drawable/personal_info"
+                        android:scaleType="centerCrop"
+                        android:padding="25dp"
+                        android:layout_margin="10dp"
+                        android:onClick="showPersonalInfo"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:text="Personal Info."
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorGreen"
+                        android:layout_gravity="center|bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
+                </FrameLayout>
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+            <android.support.v7.widget.CardView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
-                <ImageButton
-                    android:id="@+id/btnPersonalInfo"
-                    android:src="@drawable/personal_info"
-                    android:scaleType="centerCrop"
-                    android:padding="25dp"
-                    android:layout_margin="10dp"
-                    android:onClick="showPersonalInfo"
-                    android:background="@android:color/transparent"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:text="Personal Info."
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorGreen"
-                    android:layout_gravity="center|bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/btnCheckIn"
+                        android:scaleType="centerCrop"
+                        android:padding="20dp"
+                        android:layout_margin="10dp"
+                        android:onClick="checkIn"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:text="Check In"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorGreen"
+                        android:textStyle="bold"
+                        android:layout_gravity="center|bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                </FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/btnCheckOut"
-                    android:scaleType="centerCrop"
-                    android:padding="20dp"
-                    android:layout_margin="10dp"
-                    android:onClick="checkOut"
-                    android:background="@android:color/transparent"
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardElevation="10dp"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                app:cardCornerRadius="10dp">
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:text="Check Out"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/holo_red_dark"
-                    android:layout_gravity="center|bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/btnCheckOut"
+                        android:scaleType="centerCrop"
+                        android:padding="20dp"
+                        android:layout_margin="10dp"
+                        android:onClick="checkOut"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:text="Check Out"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:layout_gravity="center|bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
+                </FrameLayout>
+
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
