@@ -112,21 +112,22 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         @SuppressLint("MissingPermission") Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         @SuppressLint("MissingPermission") Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        long GPSLocationTime = 0;
-        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-
-        long NetLocationTime = 0;
-
-        if (null != locationNet) {
-            NetLocationTime = locationNet.getTime();
-        }
-
-        if ( 0 < GPSLocationTime - NetLocationTime ) {
-            return locationGPS;
-        }
-        else {
-            return locationNet;
-        }
+//        long GPSLocationTime = 0;
+//        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+//
+//        long NetLocationTime = 0;
+//
+//        if (null != locationNet) {
+//            NetLocationTime = locationNet.getTime();
+//        }
+//
+//        if ( 0 < GPSLocationTime - NetLocationTime ) {
+//            return locationGPS;
+//        }
+//        else {
+//            return locationNet;
+//        }
+        return locationGPS;
     }
 
     void getCurrentLocation()
@@ -276,10 +277,10 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         double latitude = currentLocation.getLatitude();
         double longitude = currentLocation.getLongitude();
         Uri geoLocation = Uri.parse("geo:" + latitude + "," + longitude);
+        Uri gmmIntentUri = Uri.parse("google.streetview:cbll= " + latitude + ", " +  longitude);
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-
+        Intent intent = new Intent(Intent.ACTION_VIEW,gmmIntentUri);
+        intent.setPackage("com.google.android.apps.maps");
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         } else {
