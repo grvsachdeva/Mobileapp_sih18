@@ -5,10 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +28,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +40,8 @@
         <activity android:name=".EmployeeSignUpActivity" />
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminAccountActivity" />
-        <activity android:name=".EmployeeAttendanceActivity"/>
+        <activity android:name=".EmployeeAttendanceActivity" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>

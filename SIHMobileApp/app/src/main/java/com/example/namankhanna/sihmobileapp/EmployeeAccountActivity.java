@@ -190,7 +190,8 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void showHistory(View view) {
-
+        Intent i = new Intent(EmployeeAccountActivity.this,HistoryActivity.class);
+        startActivity(i);
     }
 
     public void showPersonalInfo(View view) {
