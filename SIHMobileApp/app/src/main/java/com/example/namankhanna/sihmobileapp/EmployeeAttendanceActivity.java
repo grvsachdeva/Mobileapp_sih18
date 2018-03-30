@@ -116,8 +116,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
                         {
                             currentLocation = (Location) task.getResult();
                             Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this, Locale.getDefault());
-                            try {
-                                List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                            try { List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
                                 Address obj = addresses.get(0);
                                 String add = obj.getAddressLine(0);
 //                                add = add + "\n" + obj.getCountryName();

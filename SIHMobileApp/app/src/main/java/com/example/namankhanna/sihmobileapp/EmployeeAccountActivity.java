@@ -189,8 +189,19 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         }
     }
 
-    public void startAttendance(View view) {
+    public void showHistory(View view) {
+
+    }
+
+    public void showPersonalInfo(View view) {
+
+    }
+
+    public void checkIn(View view) {
         markAttendance();
     }
 
+    public void checkOut(View view) {
+
+    }
 }

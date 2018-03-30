@@ -9,29 +9,78 @@
 
     <TextView
         android:id="@+id/tvCurrentTime"
-        android:hint="10:04"
+        android:hint="March 30, 2018"
         android:gravity="center"
-        android:textSize="100sp"
+        android:textSize="45sp"
         android:padding="10dp"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
-
-    <TextView
-        android:id="@+id/tvCurrentDay"
-        android:hint="March 30, 2018"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mark"
-        android:onClick="startAttendance"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_margin="20dp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnHistory"
+                android:text="History"
+                android:textSize="16sp"
+                android:onClick="showHistory"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnCheckIn"
+                android:text="Check In"
+                android:onClick="checkIn"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnPersonalInfo"
+                android:text="Personal Info."
+                android:textSize="16sp"
+                android:onClick="showPersonalInfo"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnCheckOut"
+                android:text="Check Out"
+                android:textSize="16sp"
+                android:onClick="checkOut"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
