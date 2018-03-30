@@ -58,6 +58,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,"The token is : " + token);
 
+        (new FaceRecognition.DownloadAsync()).execute();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
         mEmployeeInfoReference.child("fcm_token").setValue(token);

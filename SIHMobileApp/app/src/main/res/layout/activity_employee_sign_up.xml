@@ -9,8 +9,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:onClick="clickProfilePicture"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Add Image"/>
 
         <EditText
             android:id="@+id/etSignUpName"
@@ -61,9 +74,6 @@
             android:layout_gravity="center"
             android:padding="10dp"
             android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

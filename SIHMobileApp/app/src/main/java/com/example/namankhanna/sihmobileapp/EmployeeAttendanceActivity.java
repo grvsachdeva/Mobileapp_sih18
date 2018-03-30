@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,10 +49,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import id.zelory.compressor.Compressor;
+
 public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     private static final int RC_PHOTO_PICKER = 23;
-    public static GoogleApiClient mGoogleApiClient;
     public static final String TAG = EmployeeAttendanceActivity.class.getSimpleName();
     private static final int PERMISSION_REQUEST_CODE = 21 ;
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileproviderSIH";
@@ -60,7 +62,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     private StorageReference mAttendancePics;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mAttendanceReference;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
     LocationManager mLocationManager;
 
     Location currentLocation;

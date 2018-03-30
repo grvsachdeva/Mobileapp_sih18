@@ -8,15 +8,8 @@ public class Employee {
     Boolean isActive;
     Long registeration_time;
     String fcm_token;
+    String photoUri;
 
-    public Employee(String name, String department_name, String phone_no, String userId, Boolean isActive, Long registeration_time) {
-        this.name = name;
-        this.department_name = department_name;
-        this.phone_no = phone_no;
-        this.userId = userId;
-        this.isActive = isActive;
-        this.registeration_time = registeration_time;
-    }
 
 
     public String getName() {
@@ -39,6 +32,10 @@ public class Employee {
         return isActive;
     }
 
+    public String getPhotoUri(){
+        return photoUri;
+    }
+
 
     public Long getRegisteration_time() {
         return registeration_time;
@@ -46,13 +43,14 @@ public class Employee {
 
     public String getFcm_token(){return fcm_token; };
 
-    public Employee(String name, String department_name, String phone_no, Boolean isActive, Long registeration_time,String userId) {
+    public Employee(String name, String department_name, String phone_no, Boolean isActive, Long registeration_time,String userId,String photoUri) {
         this.name = name;
         this.department_name = department_name;
         this.phone_no = phone_no;
         this.isActive = isActive;
         this.registeration_time = registeration_time;
         this.userId = userId;
+        this.photoUri = photoUri;
         fcm_token = "";
     }
 
