@@ -1,6 +1,7 @@
 package com.example.namankhanna.sihmobileapp;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,6 +48,9 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     public ValueEventListener mValueEventListener;
     public ChildEventListener mChildEventListener;
     public ArrayList<Attendance> attendanceArrayList;
+    public ArrayList<String> keyArrayList;
+    Attendance attendanceToChange=null;
+    String keyTochange=null;
     public static final String TAG = EmployeeAccountActivity.class.getSimpleName();
 
     @Override
@@ -58,11 +64,13 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,"The token is : " + token);
 
+        attendanceArrayList = new ArrayList<>();
+        keyArrayList = new ArrayList<>();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
         mEmployeeInfoReference.child("fcm_token").setValue(token);
         mAttendanceReference = mEmployeeInfoReference.child("attendance");
-        attendanceArrayList = new ArrayList<>();
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -75,12 +83,10 @@ public class EmployeeAccountActivity extends AppCompatActivity {
                 }else
                 {
                     attachValueEventListener();
-                    attachChildEventListener();
                     //Toast.makeText(EmployeeAccountActivity.this, "Welcome to your account", Toast.LENGTH_SHORT).show();
                 }
             }
         };
-
     }
 
     public void markAttendance()
@@ -98,15 +104,9 @@ public class EmployeeAccountActivity extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Attendance attendance = dataSnapshot.getValue(Attendance.class);
-                    if(attendance!=null)
-                    {
-                        attendanceArrayList.add(attendance);
-                        Log.v(TAG,attendance.toString());
-                    }else {
-                        Log.v(TAG,"No Value");
-                    }
 
+                    Attendance attendance = dataSnapshot.getValue(Attendance.class);
+                    //Log.d(TAG, "onChildAdded:"+attendance.toString());
                 }
 
                 @Override
@@ -182,6 +182,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
+        attachChildEventListener();
     }
 
     @Override
@@ -202,10 +203,87 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void checkIn(View view) {
-       markAttendance();
+        DatabaseReference attendanceRef = mFirebaseDatabase.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
+        attendanceRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Attendance attendance = dataSnapshot.getValue(Attendance.class);
+                if(attendance.getTime_in().equals("")) {
+                    markAttendance();
+                }
+                else {
+                    Toast.makeText(EmployeeAccountActivity.this, "Check Out Necessary", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void checkOut(View view) {
+        final DatabaseReference attendanceRef = mFirebaseDatabase.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
+        attendanceRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
+                Attendance attendance = dataSnapshot.getValue(Attendance.class);
+                if(attendance.getTime_out().equals("")) {
+                    Calendar currentTime = Calendar.getInstance();
+                    int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                    int minutes = currentTime.get(Calendar.MINUTE);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            EmployeeAccountActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                            String timeOut = i+":"+i1;
+                            attendanceRef.child(dataSnapshot.getKey()).child("time_out").setValue(timeOut);
+                        }
+                    },hour,minutes,true);
+                    timePickerDialog.setTitle("Select Time");
+                    timePickerDialog.show();
+                }
+                else {
+                    Toast.makeText(EmployeeAccountActivity.this, "Check In Necessary", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }

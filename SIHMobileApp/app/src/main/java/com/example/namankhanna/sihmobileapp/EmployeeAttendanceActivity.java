@@ -226,7 +226,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         String formattedDate = sdf.format(c);
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String time_in = timeFormat.format(c);
-        String time_out = time_in;
+        String time_out = "";
         attendance.setDate(formattedDate);
         attendance.setTime_in(time_in);
         attendance.setTime_out(time_out);
