@@ -63,7 +63,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     private FusedLocationProviderClient mFusedLocationProviderClient;
     LocationManager mLocationManager;
 
-    Location currentLocation = null;
+    Location currentLocation;
     TextView tvAttendanceDate;
     TextView tvAttendanceTime;
     TextView tvAttendanceLocation;
@@ -76,8 +76,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_attendance);
 
-        mLocationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         attendance = new Attendance();
         tvAttendanceDate = findViewById(R.id.tvAttendanceDate);
@@ -112,28 +111,28 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         @SuppressLint("MissingPermission") Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         @SuppressLint("MissingPermission") Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-//        long GPSLocationTime = 0;
-//        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-//
-//        long NetLocationTime = 0;
-//
-//        if (null != locationNet) {
-//            NetLocationTime = locationNet.getTime();
-//        }
-//
-//        if ( 0 < GPSLocationTime - NetLocationTime ) {
-//            return locationGPS;
-//        }
-//        else {
-//            return locationNet;
-//        }
-        return locationGPS;
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
     }
 
     void getCurrentLocation()
     {
         Location location = getLastBestLocation();
-        currentLocation = location;
+        Log.v(TAG,location.toString());
+        currentLocation = new Location(location);
         Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this,Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
@@ -291,11 +290,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     public void checkInAttendance(View view) {
         String remarks = etAttendanceRemarks.getText().toString();
-        if(mTempPhotoPath == null)
-        {
-            Toast.makeText(this, "Please click an image from camera", Toast.LENGTH_SHORT).show();
-            return;
-        }
         if(currentLocation == null)
         {
             Toast.makeText(this, "Please select the location", Toast.LENGTH_SHORT).show();
