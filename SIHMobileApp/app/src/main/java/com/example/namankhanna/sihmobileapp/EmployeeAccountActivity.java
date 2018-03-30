@@ -46,7 +46,6 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     public ArrayList<Attendance> attendanceArrayList;
     public static final String TAG = EmployeeAccountActivity.class.getSimpleName();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,6 @@ public class EmployeeAccountActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         mCurrentUser = auth.getCurrentUser();
-
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
@@ -199,10 +197,10 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void checkIn(View view) {
-        markAttendance();
+       markAttendance();
     }
 
     public void checkOut(View view) {
-        Toast.makeText(this, "Function yet to be implemented", Toast.LENGTH_SHORT).show();
+
     }
 }

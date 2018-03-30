@@ -67,7 +67,6 @@
 
                 <ImageButton
                     android:id="@+id/btnCheckIn"
-                    android:src="@drawable/check_in"
                     android:scaleType="centerCrop"
                     android:padding="20dp"
                     android:layout_margin="10dp"
@@ -130,7 +129,6 @@
 
                 <ImageButton
                     android:id="@+id/btnCheckOut"
-                    android:src="@drawable/check_out"
                     android:scaleType="centerCrop"
                     android:padding="20dp"
                     android:layout_margin="10dp"
