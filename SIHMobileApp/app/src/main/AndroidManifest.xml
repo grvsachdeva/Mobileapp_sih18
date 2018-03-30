@@ -37,7 +37,7 @@
         <activity android:name=".EmployeeSignUpActivity" />
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminAccountActivity" />
-        <activity android:name=".EmployeeAttendanceActivity"></activity>
+        <activity android:name=".EmployeeAttendanceActivity"/>
     </application>
 
 </manifest>

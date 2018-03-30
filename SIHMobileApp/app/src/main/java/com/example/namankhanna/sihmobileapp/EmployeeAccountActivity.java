@@ -36,6 +36,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth auth;
 
+    public static final String USER_UID = "Current_User_ID";
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mEmployeeInfoReference;
     private DatabaseReference mAttendanceReference;
@@ -81,15 +82,9 @@ public class EmployeeAccountActivity extends AppCompatActivity {
 
     public void markAttendance()
     {
-//        Attendance attendance;
-//        Date c = Calendar.getInstance().getTime();
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//        String formattedDate = sdf.format(c);
-//        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//        String time_in = timeFormat.format(c);
-//        String time_out = time_in;
-
+        String userUID = mCurrentUser.getUid();
         Intent i = new Intent(EmployeeAccountActivity.this,EmployeeAttendanceActivity.class);
+        i.putExtra("Current_User_ID",userUID);
         startActivity(i);
     }
 
@@ -197,4 +192,5 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     public void startAttendance(View view) {
         markAttendance();
     }
+
 }

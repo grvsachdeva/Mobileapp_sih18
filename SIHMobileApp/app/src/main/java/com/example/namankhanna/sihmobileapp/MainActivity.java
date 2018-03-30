@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmployeeEmail);
         etPassword = findViewById(R.id.etEmployeePassword);
         dialog = new ProgressDialog(this);
-
         auth = FirebaseAuth.getInstance();
 
         int logoutFlag = getIntent().getIntExtra("LOGOUT_FLAG",-1);

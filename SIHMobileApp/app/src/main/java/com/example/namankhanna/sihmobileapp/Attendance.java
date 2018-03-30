@@ -53,6 +53,31 @@ public class Attendance {
         this.time_out = time_out;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public void setTime_in(String time_in) {
+        this.time_in = time_in;
+    }
+
+    public void setTime_out(String time_out) {
+        this.time_out = time_out;
+    }
+
     public Attendance() {
+
     }
 }

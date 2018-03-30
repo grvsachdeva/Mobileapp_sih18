@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -18,8 +20,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -27,14 +33,21 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class EmployeeAttendanceActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
+public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     private static final int RC_PHOTO_PICKER = 23;
     public static GoogleApiClient mGoogleApiClient;
@@ -44,26 +57,48 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
     private String mTempPhotoPath = null;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mAttendancePics;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mAttendanceReference;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    Location currentLocation;
+    TextView tvAttendanceDate;
+    TextView tvAttendanceTime;
+    TextView tvAttendanceLocation;
+    EditText etAttendanceRemarks;
+    Attendance attendance;
+    ImageView ivEmployeeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_attendance);
+        attendance = new Attendance();
+        tvAttendanceDate = findViewById(R.id.tvAttendanceDate);
+        tvAttendanceTime = findViewById(R.id.tvAttendanceTime);
+        tvAttendanceLocation = findViewById(R.id.tvAttendanceLocation);
+        ivEmployeeImage = findViewById(R.id.ivEmployeeImage);
+        etAttendanceRemarks = findViewById(R.id.etAttendanceRemarks);
+        attendanceMarking();
         mFirebaseStorage = FirebaseStorage.getInstance();
         mAttendancePics = mFirebaseStorage.getReference().child("pics");
-        getCurrentLocation();
+        String user_uid = (getIntent()).getStringExtra(EmployeeAccountActivity.USER_UID);
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mAttendanceReference = mFirebaseDatabase.getReference().child("Employees").child(user_uid).child("attendance");
     }
 
-    public boolean checkPermission()
-    {
-        if ((ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) &&
-                (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            return false;
+    @SuppressLint("NewApi")
+    public void setupLocationPermission() {
+        if ((ContextCompat.checkSelfPermission(EmployeeAttendanceActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(EmployeeAttendanceActivity.this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            String[] permissionNeeded = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION};
+            requestPermissions(permissionNeeded, PERMISSION_REQUEST_CODE);
+        } else {
+            getCurrentLocation();
         }
-        else
-            return true;
+
     }
 
     void getCurrentLocation()
@@ -72,18 +107,33 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
 
         try{
 
-            if(checkPermission())
             {
-                Task location = mFusedLocationProviderClient.getLastLocation();
+                @SuppressLint("MissingPermission") Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful())
                         {
+                            currentLocation = (Location) task.getResult();
+                            Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this, Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                                Address obj = addresses.get(0);
+                                String add = obj.getAddressLine(0);
+//                                add = add + "\n" + obj.getCountryName();
+//                                add = add + "\n" + obj.getCountryCode();
+//                                add = add + "\n" + obj.getAdminArea();
+//                                add = add + "\n" + obj.getPostalCode();
+//                                add = add + "\n" + obj.getSubAdminArea();
+//                                add = add + "\n" + obj.getLocality();
+//                                add = add + "\n" + obj.getSubThoroughfare();
+                                Log.v(TAG + "Hello",add);
+                                attendance.setLocation(add);
+                                tvAttendanceLocation.setText(add);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             Log.d(TAG,"onComplete : found location");
-                            Location currentLocation = (Location) task.getResult();
-                            Log.d(TAG,currentLocation.getLatitude() + "");
-                            Log.d(TAG,currentLocation.getLongitude()+ "");
                         }else
                         {
                             Log.d(TAG,"onComplete : current location is null");
@@ -96,16 +146,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
         {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.v(TAG,"onConnected");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.v(TAG,"onConnectionSuspended");
     }
 
     @SuppressLint("NewApi")
@@ -163,8 +203,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
                 Uri photoURI = FileProvider.getUriForFile(this,
                         FILE_PROVIDER_AUTHORITY,
                         photoFile);
-
-                //resolvePermission(takePictureIntent,MainActivity.this,photoURI);
                 // Add the URI so the camera can store the image
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 Log.d(TAG, "Uri : " + photoURI);
@@ -174,6 +212,20 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
         }
     }
 
+    public void attendanceMarking()
+    {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = sdf.format(c);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String time_in = timeFormat.format(c);
+        String time_out = time_in;
+        attendance.setDate(formattedDate);
+        attendance.setTime_in(time_in);
+        attendance.setTime_out(time_out);
+        tvAttendanceTime.setText(time_in);
+        tvAttendanceDate.setText(formattedDate);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,6 +242,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    attendance.setImage(downloadUrl.toString());
+                    Glide.with(ivEmployeeImage.getContext()).load(downloadUrl).into(ivEmployeeImage);
                     Log.v(TAG,downloadUrl.toString());
                 }
             });
@@ -205,5 +259,38 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Goo
 
     public void clickCamera(View view) {
         setupPermission();
+    }
+
+    public void getLocation(View view) {
+        setupLocationPermission();
+    }
+
+    public void viewLocation(View view) {
+        double latitude = currentLocation.getLatitude();
+        double longitude = currentLocation.getLongitude();
+        Uri geoLocation = Uri.parse("geo:" + latitude + "," + longitude);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+        }
+    }
+
+    public void checkInAttendance(View view) {
+        String remarks = etAttendanceRemarks.getText().toString();
+        attendance.setRemarks(remarks);
+        mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(EmployeeAttendanceActivity.this, "Attendance Marked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(EmployeeAttendanceActivity.this,EmployeeAccountActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }
