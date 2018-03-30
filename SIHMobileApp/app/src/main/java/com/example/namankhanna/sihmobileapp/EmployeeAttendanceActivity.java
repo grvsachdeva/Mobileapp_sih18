@@ -63,7 +63,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     private FusedLocationProviderClient mFusedLocationProviderClient;
     LocationManager mLocationManager;
 
-    Location currentLocation;
+    Location currentLocation = null;
     TextView tvAttendanceDate;
     TextView tvAttendanceTime;
     TextView tvAttendanceLocation;
@@ -255,11 +255,12 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
                     Log.v(TAG,downloadUrl.toString());
                 }
             });
-//            if(mTempPhotoPath!=null)
-//            {
-//                (new File(mTempPhotoPath)).delete();
-//                mTempPhotoPath = null;
-//            }
+
+            if(mTempPhotoPath!=null)
+            {
+                (new File(mTempPhotoPath)).delete();
+                mTempPhotoPath = null;
+            }
 
         }
     }
@@ -290,6 +291,16 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     public void checkInAttendance(View view) {
         String remarks = etAttendanceRemarks.getText().toString();
+        if(mTempPhotoPath == null)
+        {
+            Toast.makeText(this, "Please click an image from camera", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(currentLocation == null)
+        {
+            Toast.makeText(this, "Please select the location", Toast.LENGTH_SHORT).show();
+            return;
+        }
         attendance.setRemarks(remarks);
         mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

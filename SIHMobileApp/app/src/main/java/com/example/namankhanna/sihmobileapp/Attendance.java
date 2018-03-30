@@ -78,6 +78,10 @@ public class Attendance {
     }
 
     public Attendance() {
-
+        image = "";
+        location = "";
+        remarks = "";
+        time_in = "";
+        time_out = "";
     }
 }
