@@ -6,7 +6,6 @@ public class Employee {
     String phone_no;
     Boolean isActive;
     Long registeration_time;
-    int totalAttendance;
 
     public String getName() {
         return name;
@@ -28,17 +27,13 @@ public class Employee {
         return registeration_time;
     }
 
-    public int getTotalAttendance() {
-        return totalAttendance;
-    }
 
-    public Employee(String name, String department_name, String phone_no, Boolean isActive, Long registeration_time, int totalAttendance) {
+    public Employee(String name, String department_name, String phone_no, Boolean isActive, Long registeration_time) {
         this.name = name;
         this.department_name = department_name;
         this.phone_no = phone_no;
         this.isActive = isActive;
         this.registeration_time = registeration_time;
-        this.totalAttendance = totalAttendance;
     }
 
     public Employee() {
@@ -52,7 +47,6 @@ public class Employee {
                 ", phone_no='" + phone_no + '\'' +
                 ", isActive='" + isActive + '\'' +
                 ", registeration_time=" + registeration_time +
-                ", totalAttendance=" + totalAttendance +
                 '}';
     }
 }

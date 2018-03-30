@@ -94,7 +94,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
                         android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             String[] permissionNeeded = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION};
-            requestPermissions(permissionNeeded, PERMISSION_REQUEST_CODE);
+            requestPermissions(permissionNeeded, PERMISSION_REQUEST_CODE + 1);
         } else {
             getCurrentLocation();
         }
@@ -175,7 +175,16 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
                     finish();
                 }
             }
-
+            case PERMISSION_REQUEST_CODE + 1 : {
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    getCurrentLocation();
+                }
+                else {
+                    Toast.makeText(EmployeeAttendanceActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
         }
     }
 

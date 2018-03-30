@@ -96,8 +96,7 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 etDepartment.getText().toString(),
                 etPhoneNo.getText().toString(),
                 true,
-                System.currentTimeMillis(),
-                0
+                System.currentTimeMillis()
         );
 
         employeeId.setValue(employee);
