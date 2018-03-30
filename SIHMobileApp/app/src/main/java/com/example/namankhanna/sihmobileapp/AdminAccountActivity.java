@@ -4,24 +4,81 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class AdminAccountActivity extends AppCompatActivity {
 
     public Menu mMenu;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseDatabase database;
+    ArrayList<Employee> employeeArrayList = new ArrayList<>();
+    RecyclerView rvListEmployees;
+    EmployeeAdapter employeeAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_account);
 
+        rvListEmployees = findViewById(R.id.rvListEmployees);
+        rvListEmployees.setLayoutManager(new LinearLayoutManager(this));
+        employeeAdapter = new EmployeeAdapter(employeeArrayList,this);
+        rvListEmployees.setAdapter(employeeAdapter);
+
+        employeeAdapter.setOnEmployeeClickListener(new OnEmployeeClickListener() {
+            @Override
+            public void getEmployeeId(String uid) {
+                Toast.makeText(AdminAccountActivity.this, "Id: "+uid, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference employeeRef = database.getReference().child("Employees");
+        employeeRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Employee employee = dataSnapshot.getValue(Employee.class);
+                employeeArrayList.add(employee);
+                employeeAdapter.updateEmployee(employeeArrayList);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
