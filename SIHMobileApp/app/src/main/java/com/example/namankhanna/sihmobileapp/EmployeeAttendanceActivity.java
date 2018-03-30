@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -60,6 +61,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mAttendanceReference;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    LocationManager mLocationManager;
+
     Location currentLocation;
     TextView tvAttendanceDate;
     TextView tvAttendanceTime;
@@ -72,6 +75,10 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_attendance);
+
+        mLocationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+
         attendance = new Attendance();
         tvAttendanceDate = findViewById(R.id.tvAttendanceDate);
         tvAttendanceTime = findViewById(R.id.tvAttendanceTime);
@@ -101,48 +108,40 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     }
 
+    private Location getLastBestLocation() {
+        @SuppressLint("MissingPermission") Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        @SuppressLint("MissingPermission") Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
+    }
+
     void getCurrentLocation()
     {
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        try{
-
-            {
-                @SuppressLint("MissingPermission") Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful())
-                        {
-                            currentLocation = (Location) task.getResult();
-                            Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this, Locale.getDefault());
-                            try { List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                                Address obj = addresses.get(0);
-                                String add = obj.getAddressLine(0);
-//                                add = add + "\n" + obj.getCountryName();
-//                                add = add + "\n" + obj.getCountryCode();
-//                                add = add + "\n" + obj.getAdminArea();
-//                                add = add + "\n" + obj.getPostalCode();
-//                                add = add + "\n" + obj.getSubAdminArea();
-//                                add = add + "\n" + obj.getLocality();
-//                                add = add + "\n" + obj.getSubThoroughfare();
-                                Log.v(TAG + "Hello",add);
-                                attendance.setLocation(add);
-                                tvAttendanceLocation.setText(add);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            Log.d(TAG,"onComplete : found location");
-                        }else
-                        {
-                            Log.d(TAG,"onComplete : current location is null");
-                            Toast.makeText(EmployeeAttendanceActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        }catch (Exception e)
-        {
+        Location location = getLastBestLocation();
+        currentLocation = location;
+        Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this,Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            Address obj = addresses.get(0);
+            String add = obj.getAddressLine(0);
+            Log.v(TAG + "Hello",add);
+            attendance.setLocation(add);
+            tvAttendanceLocation.setText(add);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
