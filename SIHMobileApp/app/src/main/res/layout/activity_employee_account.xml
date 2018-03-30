@@ -9,7 +9,9 @@
 
     <TextView
         android:id="@+id/tvCurrentTime"
-        android:hint="March 30, 2018"
+        android:text="March 30, 2018"
+        android:textStyle="bold"
+        android:textColor="@color/colorNavyBlue"
         android:gravity="center"
         android:textSize="45sp"
         android:padding="10dp"
@@ -29,25 +31,61 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnHistory"
-                android:text="History"
-                android:textSize="16sp"
-                android:onClick="showHistory"
-                android:background="@android:color/transparent"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/btnCheckIn"
-                android:text="Check In"
-                android:onClick="checkIn"
-                android:textSize="16sp"
-                android:background="@android:color/transparent"
+                <ImageButton
+                    android:id="@+id/btnHistory"
+                    android:src="@drawable/history"
+                    android:scaleType="centerCrop"
+                    android:padding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="showHistory"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:text="History"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGreen"
+                    android:layout_gravity="center|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
+
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btnCheckIn"
+                    android:src="@drawable/check_in"
+                    android:scaleType="centerCrop"
+                    android:padding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="showHistory"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:text="Check In"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorGreen"
+                    android:textStyle="bold"
+                    android:layout_gravity="center|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
 
 
         </LinearLayout>
@@ -58,25 +96,59 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnPersonalInfo"
-                android:text="Personal Info."
-                android:textSize="16sp"
-                android:onClick="showPersonalInfo"
-                android:background="@android:color/transparent"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/btnCheckOut"
-                android:text="Check Out"
-                android:textSize="16sp"
-                android:onClick="checkOut"
-                android:background="@android:color/transparent"
+                <ImageButton
+                    android:id="@+id/btnPersonalInfo"
+                    android:src="@drawable/personal_info"
+                    android:scaleType="centerCrop"
+                    android:padding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="showHistory"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:text="Personal Info."
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGreen"
+                    android:layout_gravity="center|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/btnCheckOut"
+                    android:src="@drawable/check_out"
+                    android:scaleType="centerCrop"
+                    android:padding="20dp"
+                    android:layout_margin="10dp"
+                    android:onClick="showHistory"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:text="Check Out"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
 
 
         </LinearLayout>
