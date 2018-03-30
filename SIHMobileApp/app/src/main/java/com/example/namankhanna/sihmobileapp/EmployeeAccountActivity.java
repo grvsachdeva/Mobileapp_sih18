@@ -195,7 +195,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void showPersonalInfo(View view) {
-
+        Toast.makeText(this, "Function yet to be implemented", Toast.LENGTH_SHORT).show();
     }
 
     public void checkIn(View view) {
@@ -203,6 +203,6 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void checkOut(View view) {
-
+        Toast.makeText(this, "Function yet to be implemented", Toast.LENGTH_SHORT).show();
     }
 }
