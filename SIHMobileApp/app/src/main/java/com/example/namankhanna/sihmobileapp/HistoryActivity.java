@@ -36,7 +36,17 @@ public class HistoryActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        DatabaseReference attendanceRef = database.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
+        DatabaseReference attendanceRef;
+
+
+        String userId = getIntent().getStringExtra("USER_ID");
+        if(userId != null) {
+            Toast.makeText(this, "Id: "+userId, Toast.LENGTH_SHORT).show();
+            attendanceRef = database.getReference().child("Employees").child(userId).child("attendance");
+        }
+        else {
+            attendanceRef = database.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
+        }
 
         attendanceRef.addChildEventListener(new ChildEventListener() {
             @Override

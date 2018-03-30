@@ -43,7 +43,9 @@ public class AdminAccountActivity extends AppCompatActivity {
         employeeAdapter.setOnEmployeeClickListener(new OnEmployeeClickListener() {
             @Override
             public void getEmployeeId(String uid) {
-                Toast.makeText(AdminAccountActivity.this, "Id: "+uid, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(AdminAccountActivity.this,HistoryActivity.class);
+                i.putExtra("USER_ID",uid);
+                startActivity(i);
             }
         });
 
