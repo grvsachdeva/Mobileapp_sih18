@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,8 +55,12 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mCurrentUser = auth.getCurrentUser();
 
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG,"The token is : " + token);
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
+        mEmployeeInfoReference.child("fcm_token").setValue(token);
         mAttendanceReference = mEmployeeInfoReference.child("attendance");
         attendanceArrayList = new ArrayList<>();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -71,7 +76,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
                 {
                     attachValueEventListener();
                     attachChildEventListener();
-                    Toast.makeText(EmployeeAccountActivity.this, "Welcome to your account", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(EmployeeAccountActivity.this, "Welcome to your account", Toast.LENGTH_SHORT).show();
                 }
             }
         };
