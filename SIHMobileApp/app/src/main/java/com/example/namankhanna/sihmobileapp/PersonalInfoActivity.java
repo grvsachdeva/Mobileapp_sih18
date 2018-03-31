@@ -37,13 +37,25 @@ public class PersonalInfoActivity extends AppCompatActivity {
         tvJobStatus = findViewById(R.id.tvEmployeeInfoJobStatus);
         tvTotalAttendance = findViewById(R.id.tvEmployeeInfoTotal);
 
+        DatabaseReference attendanceRef = database.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
+        attendanceRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setTotalAttendance(dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         DatabaseReference employeeRef = database.getReference().child("Employees").child(auth.getCurrentUser().getUid());
         employeeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Employee employee = dataSnapshot.getValue(Employee.class);
-                setTheViews(employee, dataSnapshot.getChildrenCount());
+                setTheViews(employee);
             }
 
             @Override
@@ -53,7 +65,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void setTheViews(Employee myEmployee , long count) {
+    private void setTotalAttendance(long childrenCount) {
+        tvTotalAttendance.setText(String.valueOf(childrenCount));
+    }
+
+    private void setTheViews(Employee myEmployee) {
         Glide.with(this).load(myEmployee.getPhotoUri()).centerCrop().into(ivProfileImage);
         tvName.setText(myEmployee.getName());
         tvDeparment.setText(myEmployee.getDepartment_name());
@@ -64,9 +80,5 @@ public class PersonalInfoActivity extends AppCompatActivity {
         else {
             tvJobStatus.setText("Inactive");
         }
-        if(count != 0) {
-            tvTotalAttendance.setText(String.valueOf(count));
-        }
-
     }
 }
