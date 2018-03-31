@@ -1,19 +1,15 @@
 package com.example.namankhanna.sihmobileapp;
 
-import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +34,8 @@ public class EmployeeAccountActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth auth;
+
+    TextView tvCurrentDate;
 
     public static final String USER_UID = "Current_User_ID";
     private FirebaseDatabase mFirebaseDatabase;
@@ -56,6 +53,12 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_account);
+
+        tvCurrentDate = findViewById(R.id.tvCurrentTime);
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+        String myDate = format.format(date);
+        tvCurrentDate.setText(myDate);
 
         auth = FirebaseAuth.getInstance();
         mCurrentUser = auth.getCurrentUser();
@@ -203,7 +206,8 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void showPersonalInfo(View view) {
-        Toast.makeText(this, "Function yet to be implemented", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(EmployeeAccountActivity.this,PersonalInfoActivity.class);
+        startActivity(i);
     }
 
     public void checkIn(View view) {
@@ -241,54 +245,4 @@ public class EmployeeAccountActivity extends AppCompatActivity {
             Toast.makeText(this, "Please check in first", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-//    public void checkOut(View view) {
-//        final DatabaseReference attendanceRef = mFirebaseDatabase.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
-//        attendanceRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
-//                Attendance attendance = dataSnapshot.getValue(Attendance.class);
-//                if(attendance.getTime_out().equals("")) {
-//                    Calendar currentTime = Calendar.getInstance();
-//                    int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-//                    int minutes = currentTime.get(Calendar.MINUTE);
-//                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-//                            EmployeeAccountActivity.this, new TimePickerDialog.OnTimeSetListener() {
-//                        @Override
-//                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-//                            String timeOut = i+":"+i1;
-//                            attendanceRef.child(dataSnapshot.getKey()).child("time_out").setValue(timeOut);
-//                        }
-//                    },hour,minutes,true);
-//                    timePickerDialog.setTitle("Select Time");
-//                    timePickerDialog.show();
-//                }
-//                else {
-//                    Toast.makeText(EmployeeAccountActivity.this, "Check In Necessary", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-//    }
 }

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PersonalInfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <ImageView
+                android:id="@+id/ivEmployeeInfoImage"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="Name"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorNavyBlue"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvEmployeeInfoName"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <TextView
+                android:text="Department"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorNavyBlue"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvEmployeeInfoDepartment"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <TextView
+                android:text="Phone No."
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorNavyBlue"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvEmployeeInfoPhoneNo"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="Job Status"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorNavyBlue"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvEmployeeInfoJobStatus"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_weight="2"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="Total Attendance"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorNavyBlue"
+                android:textStyle="bold"
+                android:padding="2dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvEmployeeInfoTotal"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
