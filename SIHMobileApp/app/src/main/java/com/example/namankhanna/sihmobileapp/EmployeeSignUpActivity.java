@@ -50,6 +50,8 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
     public static final String TAG = EmployeeSignUpActivity.class.getSimpleName();
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileproviderSIH";
 
+    ProgressDialog uploadDialog;
+
     String downloadUriForImage = "";
 
     @Override
@@ -69,7 +71,8 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
         ivProfileImage = findViewById(R.id.ivProfileImage);
 
         dialog = new ProgressDialog(this);
-
+        uploadDialog = new ProgressDialog(this);
+        uploadDialog.setMessage("Uploading Image");
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -182,6 +185,7 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK)
         {
+            uploadDialog.show();
             final Uri selectedImageUri;
             selectedImageUri = Uri.fromFile(new File(mTempPhotoPath));
             Glide.with(ivProfileImage.getContext()).load(selectedImageUri).into(ivProfileImage);
@@ -193,7 +197,7 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     downloadUriForImage = downloadUrl.toString();
-                    Toast.makeText(EmployeeSignUpActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                    uploadDialog.dismiss();
                     Glide.with(ivProfileImage.getContext()).load(selectedImageUri).into(ivProfileImage);
                     Log.v(TAG,downloadUrl.toString());
 

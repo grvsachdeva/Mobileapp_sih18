@@ -2,6 +2,8 @@ package com.example.namankhanna.sihmobileapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,10 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Places;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -70,6 +69,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     EditText etAttendanceRemarks;
     Attendance attendance;
     ImageView ivEmployeeImage;
+    ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         tvAttendanceLocation = findViewById(R.id.tvAttendanceLocation);
         ivEmployeeImage = findViewById(R.id.ivEmployeeImage);
         etAttendanceRemarks = findViewById(R.id.etAttendanceRemarks);
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Uploading Image");
         attendanceMarking();
         mFirebaseStorage = FirebaseStorage.getInstance();
         mAttendancePics = mFirebaseStorage.getReference().child("pics");
@@ -239,6 +242,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK)
         {
+            dialog.show();
             Uri selectedImageUri;
             selectedImageUri = Uri.fromFile(new File(mTempPhotoPath));
 
@@ -250,6 +254,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     attendance.setImage(downloadUrl.toString());
+                    dialog.dismiss();
+                    Toast.makeText(EmployeeAttendanceActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                     Glide.with(ivEmployeeImage.getContext()).load(downloadUrl).into(ivEmployeeImage);
                     Log.v(TAG,downloadUrl.toString());
                 }
@@ -295,7 +301,15 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
             Toast.makeText(this, "Please select the location", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(attendance.image.equals("") || attendance.image == null)
+        {
+
+            Toast.makeText(this, "Please click an image", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
         attendance.setRemarks(remarks);
+
 
         mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
