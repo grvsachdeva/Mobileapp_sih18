@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
+=======
+>>>>>>> 47a984c114c51557de087c4c54f7d7050f27d70c
 
 public class FaceRecognition {
     public static final String BASE_URL = "https://resultxx.herokuapp.com/";

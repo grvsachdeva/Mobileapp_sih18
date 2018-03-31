@@ -46,7 +46,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         holder.btnNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Mayank will implement the notification feature
+                (new NotificationServices.sendNotifications()).execute(employee.fcm_token);
             }
         });
         holder.rootView.setOnClickListener(new View.OnClickListener() {

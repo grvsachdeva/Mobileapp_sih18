@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
 public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     private static final int RC_PHOTO_PICKER = 23;
@@ -295,6 +296,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
             return;
         }
         attendance.setRemarks(remarks);
+
         mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

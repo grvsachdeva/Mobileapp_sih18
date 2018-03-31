@@ -10,12 +10,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class NotificationServices {
-    public static final String URL_FCM = "https://fcm.googleapis.com/fcm/send";
+    public static final String URL_FCM = "https://fcm." +
+            "googleapis.com/fcm/send";
     public static String APP_KEY = "AIzaSyDLMEbTuS94nKon39FTdohMZ8Azg65lfTg";
 
     public static void sendNotification(String token)
     {
-        String postData = "{\"to\": \"" + token + " \" ,\n" +
+        String postData = "{\"to\": \"" + token + "\" ,\n" +
                 "\t\"notification\": {\n" +
                 "\t\t\"body\": \"Please mark your attendance\" ,\n" +
                 "\t\t\"title\" : \"Message from Admin\",\n" +
