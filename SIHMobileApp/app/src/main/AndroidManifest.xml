@@ -28,6 +28,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,12 +41,15 @@
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".AdminAccountActivity" />
         <activity android:name=".EmployeeAttendanceActivity" />
-        <activity android:name=".HistoryActivity"/>
+        <activity android:name=".HistoryActivity" />
+
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".PersonalInfoActivity"></activity>
     </application>
 
 </manifest>

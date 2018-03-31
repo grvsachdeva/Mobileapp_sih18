@@ -225,9 +225,10 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 etName.getText().toString(),
                 etDepartment.getText().toString(),
                 etPhoneNo.getText().toString(),
+                auth.getCurrentUser().getUid(),
                 true,
                 System.currentTimeMillis(),
-                auth.getCurrentUser().getUid(),
+                "",
                 downloadUriForImage
         );
 

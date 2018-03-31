@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         holder.tvCheckOutTime.setText(attendance.getTime_out());
         holder.tvLocation.setText(attendance.getLocation());
         holder.tvRemarks.setText(attendance.getRemarks());
+        Glide.with(context).load(attendance.getImage()).centerCrop().into(holder.ivAttendanceImage);
     }
 
     @Override
@@ -49,6 +53,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     public class AttendanceViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvDate , tvCheckInTime , tvCheckOutTime , tvLocation , tvRemarks;
+        ImageView ivAttendanceImage;
 
         public AttendanceViewHolder(View itemView) {
             super(itemView);
@@ -57,6 +62,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             tvCheckOutTime = itemView.findViewById(R.id.tvCheckOutTime);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvRemarks = itemView.findViewById(R.id.tvRemarks);
+            ivAttendanceImage = itemView.findViewById(R.id.ivAttendanceImage);
         }
     }
 }
