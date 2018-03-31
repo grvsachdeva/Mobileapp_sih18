@@ -231,7 +231,13 @@ public class EmployeeSignUpActivity extends AppCompatActivity {
                 downloadUriForImage
         );
 
-        employeeId.setValue(employee);
+        if(employee.getPhotoUri() != null)
+        {
+            employeeId.setValue(employee);
+        }else
+        {
+            Toast.makeText(this, "Please click an image", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void clickProfilePicture(View view) {

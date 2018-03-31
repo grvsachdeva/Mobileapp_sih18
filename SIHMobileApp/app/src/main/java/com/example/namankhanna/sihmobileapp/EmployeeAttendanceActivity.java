@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -34,8 +35,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,7 +53,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class EmployeeAttendanceActivity extends AppCompatActivity{
+public class EmployeeAttendanceActivity extends AppCompatActivity {
 
     private static final int RC_PHOTO_PICKER = 23;
     public static final String TAG = EmployeeAttendanceActivity.class.getSimpleName();
@@ -61,6 +65,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mAttendanceReference;
     LocationManager mLocationManager;
+    String confidence;
 
     Location currentLocation;
     TextView tvAttendanceDate;
@@ -70,6 +75,11 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
     Attendance attendance;
     ImageView ivEmployeeImage;
     ProgressDialog dialog;
+
+    String mPhotoUri = null;
+
+    static String url1 = "https://firebasestorage.googleapis.com/v0/b/sihmobileapp-efa8d.appspot.com/o/pics%2Fnaman_01.jpg?alt=media&token=6676513e-d931-4709-a0f2-ce506cfc1240";
+    static String url2 = "https://firebasestorage.googleapis.com/v0/b/sihmobileapp-efa8d.appspot.com/o/pics%2Fnaman_02.jpg?alt=media&token=751aef9a-c016-4e6a-b287-af965d8bafcb";
 
 
     @Override
@@ -92,7 +102,24 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         mAttendancePics = mFirebaseStorage.getReference().child("pics");
         String user_uid = (getIntent()).getStringExtra(EmployeeAccountActivity.USER_UID);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference employeeRef = mFirebaseDatabase.getReference().child("Employees").child(user_uid);
+        employeeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Employee employee = dataSnapshot.getValue(Employee.class);
+                initializePhtotUri(employee.getPhotoUri());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mAttendanceReference = mFirebaseDatabase.getReference().child("Employees").child(user_uid).child("attendance");
+    }
+
+    private void initializePhtotUri(String photoUri) {
+        mPhotoUri = photoUri;
     }
 
     @SuppressLint("NewApi")
@@ -284,7 +311,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         double longitude = currentLocation.getLongitude();
         Uri geoLocation = Uri.parse("geo:" + latitude + "," + longitude);
         Uri gmmIntentUri = Uri.parse("google.streetview:cbll= " + latitude + ", " +  longitude);
-
         Intent intent = new Intent(Intent.ACTION_VIEW,gmmIntentUri);
         intent.setPackage("com.google.android.apps.maps");
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -310,15 +336,52 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
         }
         attendance.setRemarks(remarks);
 
+//        Float conf = Float.parseFloat(confidence);
 
-        mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(EmployeeAttendanceActivity.this, "Attendance Marked", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(EmployeeAttendanceActivity.this,EmployeeAccountActivity.class);
-                startActivity(i);
-                finish();
+
+
+        (new DownloadAsync()).execute(attendance.image,mPhotoUri);
+
+    }
+
+    public class DownloadAsync extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String url1 = strings[0];
+            String url2 = strings[1];
+            String confidence = FaceRecognition.sendNotification(url1, url2);
+            return confidence;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d(TAG, "onPostExecute: " + s);
+
+//            if(s == null)
+//            {
+//                Toast.makeText(EmployeeAttendanceActivity.this,"Invalid Image",Toast.LENGTH_LONG).show();
+//                return;
+//            }
+
+            if(Double.parseDouble(s) > 80)
+            mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(EmployeeAttendanceActivity.this, "Attendance Marked", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(EmployeeAttendanceActivity.this,EmployeeAccountActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+            else
+            {
+                Toast.makeText(EmployeeAttendanceActivity.this,"Fake attendance",Toast.LENGTH_LONG).show();
             }
-        });
+
+        }
     }
 }

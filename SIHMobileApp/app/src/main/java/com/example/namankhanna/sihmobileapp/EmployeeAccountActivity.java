@@ -63,7 +63,8 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,"The token is : " + token);
 
-        (new FaceRecognition.DownloadAsync()).execute();
+
+
         attendanceArrayList = new ArrayList<>();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mEmployeeInfoReference = mFirebaseDatabase.getReference().child("Employees").child(mCurrentUser.getUid());
@@ -242,53 +243,4 @@ public class EmployeeAccountActivity extends AppCompatActivity {
         }
     }
 
-
-//    public void checkOut(View view) {
-//        final DatabaseReference attendanceRef = mFirebaseDatabase.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
-//        attendanceRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
-//                Attendance attendance = dataSnapshot.getValue(Attendance.class);
-//                if(attendance.getTime_out().equals("")) {
-//                    Calendar currentTime = Calendar.getInstance();
-//                    int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-//                    int minutes = currentTime.get(Calendar.MINUTE);
-//                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-//                            EmployeeAccountActivity.this, new TimePickerDialog.OnTimeSetListener() {
-//                        @Override
-//                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-//                            String timeOut = i+":"+i1;
-//                            attendanceRef.child(dataSnapshot.getKey()).child("time_out").setValue(timeOut);
-//                        }
-//                    },hour,minutes,true);
-//                    timePickerDialog.setTitle("Select Time");
-//                    timePickerDialog.show();
-//                }
-//                else {
-//                    Toast.makeText(EmployeeAccountActivity.this, "Check In Necessary", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-//    }
 }
