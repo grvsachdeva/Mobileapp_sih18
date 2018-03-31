@@ -49,8 +49,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import id.zelory.compressor.Compressor;
-
 public class EmployeeAttendanceActivity extends AppCompatActivity{
 
     private static final int RC_PHOTO_PICKER = 23;

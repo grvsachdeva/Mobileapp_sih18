@@ -202,39 +202,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
     }
 
     public void checkIn(View view) {
-        DatabaseReference attendanceRef = mFirebaseDatabase.getReference().child("Employees").child(auth.getCurrentUser().getUid()).child("attendance");
-        attendanceRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Attendance attendance = dataSnapshot.getValue(Attendance.class);
-                if(attendance.getTime_in().equals("")) {
-                    markAttendance();
-                }
-                else {
-                    Toast.makeText(EmployeeAccountActivity.this, "Check Out Necessary", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        markAttendance();
     }
 
     public void checkOut(View view) {

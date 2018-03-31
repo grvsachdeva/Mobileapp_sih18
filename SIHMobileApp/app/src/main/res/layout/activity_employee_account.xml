@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tvCurrentTime"
-        android:text="March 30, 2018"
+        android:text="March 31, 2018"
         android:textStyle="bold"
         android:textColor="@color/colorNavyBlue"
         android:gravity="center"
