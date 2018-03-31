@@ -62,7 +62,7 @@ public class EmployeeAccountActivity extends AppCompatActivity {
 
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,"The token is : " + token);
-        
+
         (new FaceRecognition.DownloadAsync()).execute();
         attendanceArrayList = new ArrayList<>();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
