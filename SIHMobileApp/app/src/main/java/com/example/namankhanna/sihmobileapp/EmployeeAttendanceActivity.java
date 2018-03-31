@@ -49,7 +49,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import id.zelory.compressor.Compressor;
 
 public class EmployeeAttendanceActivity extends AppCompatActivity{
 
@@ -297,6 +296,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity{
             return;
         }
         attendance.setRemarks(remarks);
+
         mAttendanceReference.push().setValue(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

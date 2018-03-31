@@ -34,7 +34,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 
-import id.zelory.compressor.Compressor;
 
 public class EmployeeSignUpActivity extends AppCompatActivity {
 

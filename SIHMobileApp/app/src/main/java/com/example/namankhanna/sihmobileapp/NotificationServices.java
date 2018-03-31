@@ -16,7 +16,7 @@ public class NotificationServices {
 
     public static void sendNotification(String token)
     {
-        String postData = "{\"to\": \"" + token + " \" ,\n" +
+        String postData = "{\"to\": \"" + token + "\" ,\n" +
                 "\t\"notification\": {\n" +
                 "\t\t\"body\": \"Please mark your attendance\" ,\n" +
                 "\t\t\"title\" : \"Message from Admin\",\n" +
